@@ -21,7 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('mydiary/', include('diaries.urls')),
     path('users/', include('users.urls')),
-    path('users/', include('django.contrib.auth.urls')),
 ]
 
 from django.conf import settings

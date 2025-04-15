@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+
+{% comment %} {% include 'partials/slider.html' with slides=slides %} {% endcomment %}
+
+<div class="container my-5">
+    <section>
+        <div class="col-md-12 mb-5">
+            <p class="h1 text-center text-secondary">
+                {% trans "Featured Books" %}
+            </p>
+        </div>
+    <div class="row">
+        {% comment %}{% for product in products %}
+            <div class="col-md-3">
+                {% include 'common/product_card.html' with product=product%}
+            </div>
+        {% endfor %}{% endcomment %}
+    </div>
+    </section>
+</div>
+
+{% endblock content %}

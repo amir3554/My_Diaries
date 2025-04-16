@@ -30,6 +30,31 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     {% comment %} <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/stripe.js' %}"></script> {% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+    <script>
+        // تفعيل التلميحات
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    
+    {% comment %} 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // You can add click handlers for each dropdown item
+                document.querySelectorAll('.dropdown-content a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const action = this.textContent;
+                    alert(`You selected: ${action}`);
+                    // Add your actual functionality here
+                });
+                });
+            });
+        </script>
+    {% endcomment %}
     </body>
 </html>

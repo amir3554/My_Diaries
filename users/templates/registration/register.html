@@ -49,9 +49,13 @@
                 <h2 class="text-center mb-4">{% trans "Create Account" %}</h2>
             </div>
             <div class="card-body">
-                <form method="POST" class="form-control">
+                <form method="POST" class="form-control" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% include "form.html" with form=form%}
+                    {% if user.profile_image %}
+                        <img src="{{ user.profile_image.url }}"
+                         alt="Profile image" class="img-thumbnail" width="150">
+                    {% endif %}
                     <button type="submit" 
                     class="btn bg-gradient btn-block"
                     style="background-color: rgb(141, 255, 255);">

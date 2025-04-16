@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from .forms import DiaryForm
 from .models import Diary
-
+from django.conf import settings
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {'MEDIA_URL': settings.MEDIA_URL})
 
 def index(request):
     return render(request, 'index.html')

@@ -1,0 +1,84 @@
+# Django specific
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-*
+media/
+static/
+
+# Django >= 1.9
+*.sqlite3
+
+# Environment related
+env/
+venv/
+.venv/
+*/env/
+*/venv/
+.Python
+Lib/
+include/
+local/
+bin/
+sdist/
+build/
+eggs/
+parts/
+.tox/
+docs/_build
+target/
+dist/
+
+# pyenv
+.python-version
+
+# Bytecode
+*.pyc
+__pycache__/
+*.pyd
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.whl
+bundle/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Editor and IDE related
+.idea/
+*.suo
+*.njb
+*.sln
+*.pdb
+._*
+.DS_Store
+*.swp
+*~
+tmp/
+temp/
+*.bak
+*.orig
+*.~
+.vscode/
+*.sublime-project
+*.sublime-workspace
+/out/
+/build/
+
+# OS related
+[Bb]inaries/

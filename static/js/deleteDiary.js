@@ -1,18 +1,18 @@
-//<button class="delete-btn" data-project-id="1">Delete</button>
+//<button class="delete-btn" data-diary-id="1">Delete</button>
 
 document.querySelectorAll('.delete-btn').forEach(button => {
     button.addEventListener('click', function() {
-        const projectId = this.getAttribute('data-project-id');
-        const confirmDelete = confirm("Are you sure you want to delete this project?");
+        const diaryId = this.getAttribute('data-diary-id');
+        const confirmDelete = confirm("Are you sure you want to delete this diary?");
         
         if (confirmDelete) {
-            deleteProject(projectId);
+            deleteDiary(diaryId);
         }
     });
 });
 
-function deleteProject(projectId) {
-    fetch(`/delete-project/${projectId}/`, {
+function deleteDiary(diaryId) {
+    fetch(`/mydiary/diary/delete/${diaryId}`, {
         method: 'DELETE', // or 'POST' if you are using a form submission
         headers: {
             'X-CSRFToken': getCookie('csrftoken'), // Include CSRF token for Django
@@ -21,16 +21,19 @@ function deleteProject(projectId) {
     })
     .then(response => {
         if (response.ok) {
-            // Optionally remove the project from the UI
-            alert("Project deleted successfully!");
-            // Follow-up: remove the project from the DOM or refresh the project list
-        } else {
-            alert("There was an issue deleting the project.");
-        }
+            // Optionally remove the diary from the UI
+            const diaryElement = document.getElementById(`diary-${diaryId}`);
+            if (diaryElement) {
+                alert("diary deleted successfully!");
+                diaryElement.remove();
+            } else {
+                alert("There was an issue deleting the diary.");
+            }
+        }  
     })
     .catch(error => {
         console.error('Error:', error);
-        alert("An error occurred while trying to delete the project.");
+        alert("An error occurred while trying to delete the diary. CATCH");
     });
 }
 

@@ -80,7 +80,7 @@
     }
 </style>
 <header>
-<nav class="navbar navbar-expand-md bg-gradient bg-success navbar-dark p-3 ">
+<nav class="navbar navbar-expand-md bg-gradient bg-warning navbar-dark p-3 ">
     {% comment %} 
     <div class="container-fluid">
         <div class="dropdown ">
@@ -93,7 +93,7 @@
     {% endcomment %}
     <a class="navbar-brand"
        data-toggle="tooltip"
-       href="{% url 'CreateDiary' %}"
+       href="{% url 'DiariesList' %}"
        title="{% trans "View all your Diaries and edit them." %}">
         {% trans "Diary Management" %}
     </a>
@@ -103,7 +103,7 @@
     <div class="collapse navbar-collapse" id="navbarNavCollapse">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">{% trans 'home' %}</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'Index' %}">{% trans 'home' %}</a>
             </li>
             <li class="navbar-item">
             </li>
@@ -119,7 +119,7 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
-                            <button type="submit">{% trans "Logout" %}</button>
+                            <button class="btn btn-danger"type="submit">{% trans "Logout" %}</button>
                         </form>
                     </li>
                 </ul>

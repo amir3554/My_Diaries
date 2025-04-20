@@ -1,0 +1,39 @@
+# بيئة التطوير
+venv/
+env/
+
+# ملفات النظام
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# ملفات البيئة السرية
+.env
+*.env
+
+# إعدادات محررات
+.vscode/
+.idea/
+
+# ملفات السجلات
+*.log
+
+# ملفات Django
+db.sqlite3
+/staticfiles/
+/media/
+
+# ملفات الترجمة المؤقتة
+*.mo
+
+# ملفات التغطية والاختبار
+htmlcov/
+.coverage
+*.cover
+coverage.xml
+nosetests.xml
+test-results.xml
+
+# ملفات pip
+pip-log.txt
+pip-delete-this-directory.txt

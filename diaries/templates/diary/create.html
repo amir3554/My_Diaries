@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row justfy-container-md-center">
-        <div class="card col-md-6 px-0">
+        <div class="card col-md-7 px-0">
             <div class="card-header">
                 <h3 class="mb-0 py-2">{% trans "Today's diary!" %}</h3>
             </div>
@@ -12,7 +12,7 @@
                 <form method="post">
                     {% csrf_token %}
                     {% include "form.html" with form=form%}
-                    <button class="btn btn-success">
+                    <button class="btn btn-info">
                         {% trans "Save" %}
                     </button>
                 </form>

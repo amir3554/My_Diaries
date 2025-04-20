@@ -29,9 +29,9 @@ class Diary(models.Model):
     
 
 class Notes(models.Model):
-    description = models.CharField(max_length=255)
-    important = models.BooleanField(default=False)
+    content = models.CharField(max_length=255)
+    is_important = models.BooleanField(default=False)
     diary = models.ForeignKey(Diary, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.description
+        return self.content

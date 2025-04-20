@@ -138,5 +138,5 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
-LOGIN_REDIRECT_URL = '/mydiary/index'
+LOGIN_REDIRECT_URL = '/mydiary/diary/index'
 LOGOUT_REDIRECT_URL = '/mydiary/'

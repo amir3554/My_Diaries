@@ -2,7 +2,7 @@ from django import forms
 from .models import Diary, Notes
 from django.utils.translation import gettext as trans
 
-attrs = {'class' : 'form-control'}
+attrs = {'class' : 'form-control '}
 
 class DiaryForm(forms.ModelForm):
 
@@ -49,14 +49,14 @@ class NotesForm(forms.ModelForm):
 
         model = Notes
 
-        fields = ['description', 'important']
+        fields = ['content', 'is_important']
 
         labels = {
-            'description' : trans('Type here your diary, how was your day!'),
-            'important' : trans('Important')
+            'content' : trans('Type here your diary, how was your day!'),
+            'is_important' : trans('is_Important')
         }
 
         widgets = {
-            'description': forms.TextInput(attrs=attrs),
-            'important': forms.CheckboxInput(attrs=attrs)
+            'content': forms.TextInput(attrs=attrs),
+            'is_important': forms.CheckboxInput(attrs=attrs)
             }

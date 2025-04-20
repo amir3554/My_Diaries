@@ -1,55 +1,62 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load humanize %}
-
+{% comment %} {% load humanize %} {% endcomment %}
 {% comment %} | naturaltime  {% endcomment %}
 {% block content %}
-
-    <div class="d-flex">
-            <h3 class="me-auto">{% trans 'MyDiaries' %}</h3>
-            <div>
-                <a href="{% url 'create_diary' %}" class="btn btn-outline-success">
-                        <i class="bi bi-plus-lg "></i> {% trans 'New Diary'%}
-                </a>
+<div class="d-flex">
+    <div class="d-flex justify-content-center">
+        <div class="rounded-circle border border-2 border-dark p-1 bg-light"
+         style="width: 150px; height: 150px; overflow: hidden;">
+         {% if user.profile_picture %}
+            <img src="{{ user.profile_picture }}"
+             class="img-fluid rounded-circle w-100 h-100 object-fit-cover">
+        {% else %}
+            <div class="w-100 h-100 rounded-circle"
+                style="background-image: url('/media/OIP.jpg');
+                background-size: cover; background-position: center;">
             </div>
+        </div>
+        {% endif %}
     </div>
-
-
-<div class="row my-5">
+    <h2 class="m-4 px-10">{% trans 'MyDiaries' %}</h2>
+    <p class="m-4 card-text text-muted small clamp-2">{{ user.bio }}</p>
+</div>
+<div class="row mt-5">
     {% for diary in object_list %}
-            <div class="col-md-4">
-                <div class="card-mb-3">
-                        <div class="card-body">
-                            <p>
-                                <span class="badge rounded-pill bg-dark">
-                                    {{ diary.get_status_display }}
-                                </span>
-                            </p>
-                            <h3 class='card-title fs-6'>{{ diary.title }}</h3>
-                            <p class="card-text text-muted small">{{ diary.description }}</p>
-                            <div class="d-flex">
-                                    <span class="me-auto text-muted small">
-                                        <i class="bi bi-clock"></i>
-                                        <time datetime="{{ diary.created_at }}">
-                                                {{ diary.created_at}}
-                                        </time>
-                                    </span>
-                                    <a href="{% url 'update_diary' diary.id %}" class="btn btn-sm btn-outline-dark mx-1">
-                                        {% trans 'Edit' %}
-                                    </a>
-                                    <a href="{% url 'delete_diary' diary.id %}" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </a>
-                            </div>
-                        </div>
+        <div class="col-md-4" id="diary-{{ diary.id }}">
+            <div class="card-mb-3">
+                <div class="card-body">
+                    <p>
+                        <span class="badge rounded-pill bg-dark">
+                            {{ diary.get_mood_display }}
+                        </span>
+                    </p>
+                    <h3 class='card-title fs-6'>{{ diary.title }}</h3>
+                    <p class="card-text text-muted small clamp-2">{{ diary.description }}</p>
+                    <div class="d-flex">
+                        <span class="me-auto text-muted small">
+                            <i class="bi bi-clock"></i>
+                            <time datetime="{{ diary.created_at }}">
+                                {{ diary.created_at}}
+                            </time>
+                        </span>
+                        <a href="{% url 'UpdateDiary' diary.id %}" class="btn btn-sm btn-outline-dark mx-1">
+                            {% trans 'Edit' %}
+                        </a>
+                        <button class="delete-btn btn btn btn-sm btn-outline-danger"
+                            data-diary-id="{{ diary.id }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+        </div>
     {% empty %}
         <div class="col-md-12">
-            <div class="h-100 p-5 bg-white border rounded-3 text-center">
-                <p>{% trans 'There are no diarys to show.' %}</p>
-                <p><i class="bi bi-emoji-frown fs-1"></i></p>
-                <a href="{% url 'create_diary' %}" class="btn btn-outline-success">
+            <div class="h-100 p-5 text-center">
+                <h2>{% trans 'There are no diarys to show.' %}</h2>
+                <p><i class="bi bi-emoji-frown fs-1 lni lni-sad text-muted"></i></p>
+                <a href="{% url 'CreateDiary' %}" class="btn btn-outline-warning">
                     <i class="bi bi-plus-lg "></i> {% trans 'New diary'%}
                 </a>
             </div>
@@ -86,6 +93,13 @@
         </div>
     {% endif %}
 </div>
-
-
+{% if object_list|length != 0 %}
+    <div class="d-flex justify-content-center mb-4 py-4">
+        <button class="btn btn-outline-info btn-lg">
+            <a href="{% url 'CreateDiary' %}" class="btn btn-outline-info">
+                    <i class="bi bi-plus-lg "></i> {% trans 'New Diary'%}
+            </a>
+        </button>
+    </div>
+{% endif %}
 {% endblock %}

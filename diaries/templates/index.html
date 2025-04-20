@@ -8,17 +8,16 @@
     <section>
         <div class="col-md-12 mb-5">
             <p class="h1 text-center text-secondary">
-                {% trans "Featured Books" %}
+                {% trans "Random Diaries Slider" %}
             </p>
         </div>
-    <div class="row">
-        {% comment %}{% for product in products %}
-            <div class="col-md-3">
-                {% include 'common/product_card.html' with product=product%}
-            </div>
-        {% endfor %}{% endcomment %}
-    </div>
     </section>
 </div>
-
+<div class="d-flex justify-content-center mt-5 py-5">
+    <button class="btn btn-outline-info btn-lg">
+        <a href="{% url 'CreateDiary' %}" class="btn btn-outline-info">
+                <i class="bi bi-plus-lg "></i> {% trans 'New Diary'%}
+        </a>
+    </button>
+</div>
 {% endblock content %}

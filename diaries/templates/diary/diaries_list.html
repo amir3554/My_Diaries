@@ -5,21 +5,25 @@
 {% block content %}
 <div class="d-flex">
     <div class="d-flex justify-content-center">
-        <div class="rounded-circle border border-2 border-dark p-1 bg-light"
-         style="width: 150px; height: 150px; overflow: hidden;">
-         {% if user.profile_picture %}
-            <img src="{{ user.profile_picture }}"
-             class="img-fluid rounded-circle w-100 h-100 object-fit-cover">
-        {% else %}
-            <div class="w-100 h-100 rounded-circle"
-                style="background-image: url('/media/OIP.jpg');
-                background-size: cover; background-position: center;">
-            </div>
+        <div class="rounded-circle border border-2 border-dark p-1  bg-light"
+            style="width: 150px; height: 150px; overflow: hidden;">
+            {% if user.profile_image %}
+                <div class="w-100 h-100 rounded-circle"
+                    style="background-image: url('/media/{{ user.profile_image}}');
+                    background-size: cover; background-position: center;">
+                </div>
+            {% else %}
+                <div class="w-100 h-100 rounded-circle"
+                    style="background-image: url('/media/OIP.jpg');
+                    background-size: cover; background-position: center;">
+                </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
     <h2 class="m-4 px-10">{% trans 'MyDiaries' %}</h2>
-    <p class="m-4 card-text text-muted small clamp-2">{{ user.bio }}</p>
+    <p class="m-4 card-text text-muted small clamp-2">
+        {{ user.bio }}
+    </p>
 </div>
 <div class="row mt-5">
     {% for diary in object_list %}
@@ -33,7 +37,8 @@
                     </p>
                     <h3 class='card-title fs-6'>{{ diary.title }}</h3>
                     <p class="card-text text-muted small  clamp-2"
-                        style="font-family:'Playwrite RO';">
+                        style="font-family:'Playwrite RO';"
+                        id="desc-{{ diary.id }}">
                         {{ diary.description }}
                     </p>
                     <div class="d-flex">
@@ -44,6 +49,11 @@
                                 {{ diary.created_at}}
                             </time>
                         </span>
+                        <button onclick="toggleClamp({{ diary.id }})"
+                            id="btn-{{ diary.id }}" 
+                            class="btn btn-sm btn-outline-info">
+                            <i class="bi bi-eye"></i>
+                        </button>
                         <a href="{% url 'UpdateDiary' diary.id %}" class="btn btn-sm btn-outline-dark mx-1">
                             {% trans 'Edit' %}
                         </a>
@@ -106,4 +116,23 @@
         </button>
     </div>
 {% endif %}
+
+
+<script>
+    function toggleClamp(id) {
+        const desc = document.getElementById(`desc-${id}`);
+        const btn = document.getElementById(`btn-${id}`);
+      
+    if (desc.classList.contains('clamp-2')) {
+        desc.classList.remove('clamp-2');
+        btn.innerHTML = `<i class="bi bi-eye-slash"></i>`;
+    } else {
+        desc.classList.add('clamp-2');
+        btn.innerHTML = `<i class="bi bi-eye"></i>`;
+        }
+    }
+</script>
+
+
+
 {% endblock %}

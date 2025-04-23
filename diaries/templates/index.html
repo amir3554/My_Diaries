@@ -8,6 +8,23 @@
             <p class="h1 text-center text-secondary">
                 {% trans "Happy Days Slider" %}
             </p>
+            <div class="d-flex justify-content-center">
+                <div class="rounded-circle"
+                    style="width: 250px; height: 250px; overflow: hidden;">
+                    {% if user.profile_image %}
+                        <div class="w-100 h-100 rounded-circle"
+                            style="background-image: url('/media/{{ user.profile_image}}');
+                            background-size: cover; background-position: center;">
+                        </div>
+                    {% else %}
+                        <div class="w-100 h-100 rounded-circle"
+                            style="background-image: url('/media/OIP.jpg');
+                            background-size: cover; background-position: center;">
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
             {% include 'partials/slider.html' with slides=slides %}
         </div>
     </section>

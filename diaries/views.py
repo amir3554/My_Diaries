@@ -10,9 +10,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView ,CreateView, DetailView, ListView, FormView, DeleteView, UpdateView
+from django.db.models import Q
 import json
 import random
-
+from django.utils.dateparse import parse_date
 
 
 def home(request):
@@ -53,12 +54,24 @@ class DiariesListView(LoginRequiredMixin, ListView):
     ordering = ['-updated_at']
 
     def get_queryset(self):
+
+        query = self.request.GET.get('query')
+        created_at = self.request.GET.get('created_at')
+
+        #if not (query or created_at):
+        #    return super().get_queryset().none()
+                
+        filters = Q()
+
+        if query:
+            filters |= Q(title__icontains=query) 
+            filters |= Q(description__icontains=query)
+
+        if created_at:
+            filters &= Q(created_at=created_at)
+
         query_set = super().get_queryset()
-        where = {'user_id': self.request.user}
-        q = self.request.GET.get('q', None)
-        if q:
-            where['title__icontains'] = q
-        return query_set.filter(**where)
+        return query_set.filter(filters)
     
 
 class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):

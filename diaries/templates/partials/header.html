@@ -79,6 +79,7 @@
         opacity: 1;
     }
 </style>
+{% if user.is_authenticated %}
 <header>
 <nav class="navbar navbar-expand-md bg-gradient bg-warning navbar-dark p-3 ">
     {% comment %} 
@@ -115,8 +116,9 @@
                     {{ user.username }}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#">{% trans 'Profile' %}</a></li>
-                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'Profile' user.id %}">{% trans 'Profile' %}</a></li>
+                    <li><a class="dropdown-item" href="{% url 'EditProfile' user.id %}">{% trans "Edit Profile" %}</a></li>
+                    <hr class="dropdown-divider">
                     <li><form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button class="btn btn-danger"type="submit">{% trans "Logout" %}</button>
@@ -129,9 +131,9 @@
             <div class="input-group">
                 <input type='text'
                 class='form-control' 
-                name='q' 
+                name='query' 
                 placeholder="{% trans 'Search' %}"
-                value="{{ request.GET.q }}">
+                value="{{ request.GET.query }}">
                     <button class="btn btn-outline-light" type="submit">
                     <i class="bi bi-search"></i>
                 </button>
@@ -148,3 +150,4 @@
     </div>        
 </nav>
 </header>
+{% endif %}

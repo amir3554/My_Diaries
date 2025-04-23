@@ -1,5 +1,5 @@
 from typing import Any
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordChangeForm
 from django import forms
 from .models import CustomUser
 
@@ -22,6 +22,9 @@ class UserLoginForm(AuthenticationForm):
     )
 
 class CustomUserCreationForm(UserCreationForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
     
     username = forms.CharField(
         label='username',
@@ -59,7 +62,7 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     profile_image = forms.ImageField(
-        label='profile_image',
+        label='profile image (Optional)',
         required=False,
         widget=forms.ClearableFileInput(attrs=attrs)
     )
@@ -69,3 +72,60 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'email', 'first_name',
                  'last_name', 'password1', 'password2', 'bio', 'profile_image']
+        
+class ChangeUserPasswordForm(PasswordChangeForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    current_password = forms.CharField(
+        label='current password',
+        widget=forms.PasswordInput(attrs=attrs)
+    )
+
+    new_password1 = forms.CharField(
+        label='new password',
+        widget=forms.PasswordInput(attrs=attrs)
+    )
+
+    new_password2 = forms.CharField(
+        label='password confirmation',
+        widget=forms.PasswordInput(attrs=attrs)
+    )
+
+    class Meta:
+        medel = CustomUser
+        fields = []  # You usually don't need to specify fields here for PasswordChangeForm
+
+
+class CustomUserUpdateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    bio = forms.CharField(
+    label='bio (Optional)',
+    required=False,
+    widget=forms.Textarea(attrs=attrs)
+    )
+
+
+    username = forms.CharField(
+        label='user name',
+        widget=forms.TextInput(attrs=attrs)
+    )
+
+    profile_image = forms.ImageField(
+        label='profile image (Optional)',
+        required=False,
+        widget=forms.ClearableFileInput(attrs=attrs)
+    )
+
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'bio', 'profile_image']
+
+
+
+

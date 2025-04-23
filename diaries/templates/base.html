@@ -5,8 +5,13 @@
 <html lang="en" class="h-100" dir="ltr">
 <head>
     <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% trans 'App Name' %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+RO:wght@100..400&display=swap" rel="stylesheet">
     <link href="{% static 'css/101.css' %}" rel="stylesheet">
     <link href="{% static 'css/app.css' %}" rel="stylesheet">
     <link href="{% static 'css/mycss.css' %}" rel="stylesheet">

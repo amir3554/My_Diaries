@@ -1,22 +1,38 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.urls import reverse_lazy, reverse
 from .forms import DiaryForm, DiaryUpdateForm, NotesForm
 from .models import Diary, Notes
+from users.models import CustomUser
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, DetailView, ListView, FormView, DeleteView, UpdateView
+from django.views.generic import TemplateView ,CreateView, DetailView, ListView, FormView, DeleteView, UpdateView
 import json
+import random
+
 
 
 def home(request):
     return render(request, 'home.html', {'MEDIA_URL': settings.MEDIA_URL})
 
-def index(request):
-    return render(request, 'index.html')
 
+class Index(LoginRequiredMixin, TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        user = self.request.user
+        min_mood = 6
+        diaries = Diary.objects.filter(user=user, mood__lte=min_mood)
+        random_diaries = random.sample(list(diaries), min(len(diaries), 5))
+        context['slides'] = random_diaries
+
+        return context
+    
 
 class CreateDiaryView(LoginRequiredMixin ,CreateView):
     model = Diary
@@ -63,7 +79,7 @@ class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
         return reverse('UpdateDiary', args=[self.object.id])
 
 
-
+@login_required
 @require_http_methods(['DELETE'])
 def delete_diary(request, pk):
     try:
@@ -73,9 +89,9 @@ def delete_diary(request, pk):
     except diary.DoesNotExist:
         return JsonResponse({'message': 'diary not found.'}, status=404)
     
+    
 
-
-
+@login_required
 def create_note(request, diary_id):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -91,7 +107,7 @@ def create_note(request, diary_id):
         })
     return JsonResponse({"success": False}, status=400)
 
-
+@login_required
 def edit_note(request, diary_id, note_id):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -102,7 +118,7 @@ def edit_note(request, diary_id, note_id):
         return JsonResponse({"success": True, "content": note.content})
     return JsonResponse({"success": False}, status=400)
 
-
+@login_required
 @require_http_methods(['DELETE'])
 def delete_note(request, diary_id, note_id):
     try:

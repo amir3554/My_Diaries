@@ -138,5 +138,10 @@ AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
+LOGIN_URL = 'users/login/'
 LOGIN_REDIRECT_URL = '/mydiary/diary/index'
 LOGOUT_REDIRECT_URL = '/mydiary/'
+
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True  # لو تستخدم HTTPS
+CSRF_COOKIE_SECURE = True     # لو تستخدم HTTPS

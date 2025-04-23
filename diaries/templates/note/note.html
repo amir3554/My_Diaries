@@ -1,12 +1,13 @@
 {% load i18n %}
+<meta name="csrf-token" content="{{ csrf_token }}">
 <h3 class="text"><i class="bi bi-plus-circle"></i> Add Your Notes Here!</h3>
 <ul class="list-group">  
     {% for note in diary.notes_set.all %}
-    <div id="note-{{ note.id }}" class="container">
-        
-        <p class="note-content">{{ note.content }}</p>
-        
-        <input type="text" class="edit-input" value="{{ note.content }}" style="display:none;">
+    <div id="note-{{ note.id }}" class="container"> 
+
+        <p class="note-content" style="font-family:'Playwrite RO';">{{ note.content }}</p>
+
+        <input type="text" class="edit-input" value="{{ note.content }}" style="display:none; font-family:'Playwrite RO';">
         
         <button onclick="editNote({{ note.id }})" class="btn btn-sm btn-outline-dark mx-1">
             <i class="bi bi-pencil"></i>
@@ -48,6 +49,7 @@
     }
     
     function editNote(noteId) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         const noteDiv = document.getElementById(`note-${noteId}`);
         const contentP = noteDiv.querySelector(".note-content");
         const input = noteDiv.querySelector(".edit-input");
@@ -56,6 +58,7 @@
         contentP.style.display = "none";
         input.style.display = "inline";
         saveBtn.style.display = "inline";
+        saveBtn.dataset.csrfToken = csrfToken;
     }
     
     function saveNote(noteId) {
@@ -132,8 +135,8 @@
                 console.log("Note object:", note); // 🔍
                 const noteHTML = `
                     <div id="note-${note.id}" class="container">
-                    <p class="note-content">${note.content}</p>
-                    <input type="text" class="edit-input" value="${note.content}" style="display:none;">
+                    <p class="note-content" style="font-family:'Playwrite RO';">${note.content}</p>
+                    <input type="text" class="edit-input" value="${note.content}" style="display:none; font-family:'Playwrite RO';">
                     <button onclick="editNote(${note.id})" class="btn btn-sm btn-outline-dark mx-1">
                         <i class="bi bi-pencil"></i>
                         {% trans "Edit" %}

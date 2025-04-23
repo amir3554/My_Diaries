@@ -32,11 +32,15 @@
                         </span>
                     </p>
                     <h3 class='card-title fs-6'>{{ diary.title }}</h3>
-                    <p class="card-text text-muted small clamp-2">{{ diary.description }}</p>
+                    <p class="card-text text-muted small  clamp-2"
+                        style="font-family:'Playwrite RO';">
+                        {{ diary.description }}
+                    </p>
                     <div class="d-flex">
                         <span class="me-auto text-muted small">
                             <i class="bi bi-clock"></i>
-                            <time datetime="{{ diary.created_at }}">
+                            <time datetime="{{ diary.created_at }}" 
+                                style="font-family:'Playwrite RO';">
                                 {{ diary.created_at}}
                             </time>
                         </span>

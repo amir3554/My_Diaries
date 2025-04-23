@@ -2,14 +2,13 @@
 {% load i18n %}
 {% block content %}
 
-{% comment %} {% include 'partials/slider.html' with slides=slides %} {% endcomment %}
-
 <div class="container my-5">
     <section>
         <div class="col-md-12 mb-5">
             <p class="h1 text-center text-secondary">
-                {% trans "Random Diaries Slider" %}
+                {% trans "Happy Days Slider" %}
             </p>
+            {% include 'partials/slider.html' with slides=slides %}
         </div>
     </section>
 </div>

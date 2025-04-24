@@ -54,22 +54,11 @@ class DiariesListView(LoginRequiredMixin, ListView):
     ordering = ['-updated_at']
 
     def get_queryset(self):
-
         query = self.request.GET.get('query')
-        created_at = self.request.GET.get('created_at')
-
-        #if not (query or created_at):
-        #    return super().get_queryset().none()
-                
         filters = Q()
-
         if query:
-            filters |= Q(title__icontains=query) 
-            filters |= Q(description__icontains=query)
-
-        if created_at:
-            filters &= Q(created_at=created_at)
-
+            filters = Q(title__icontains=query) |  Q(description__icontains=query)
+        
         query_set = super().get_queryset()
         return query_set.filter(filters)
     

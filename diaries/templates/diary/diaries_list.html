@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% comment %} {% load humanize %} {% endcomment %}
-{% comment %} | naturaltime  {% endcomment %}
+{% load mood_tags %}
 {% block content %}
 <div class="d-flex">
     <div class="d-flex justify-content-center">
@@ -32,7 +31,7 @@
                 <div class="card-body">
                     <p>
                         <span class="badge rounded-pill bg-dark">
-                            {{ diary.get_mood_display }}
+                            {{ diary.mood|mood_emoji }}
                         </span>
                     </p>
                     <h3 class='card-title fs-6'>{{ diary.title }}</h3>

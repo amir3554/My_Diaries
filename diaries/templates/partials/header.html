@@ -78,20 +78,55 @@
         visibility: visible;
         opacity: 1;
     }
+
+    .search-form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px; 
+        padding: 10px;
+        background-color: #ffc107; /* لون خلفية متناسق مع التصميم لديك */
+        border-radius: 5px;
+    }
+    
+    .search-input {
+        border: none;
+        border-radius: 5px;
+        padding: 8px;
+        font-size: 14px;
+        outline: none;
+    }
+    
+    .text-input {
+        flex: 3; /* لجعل صندوق البحث الأساسي أعرض */
+    }
+    
+    .date-input {
+        width: 80px; /* حجم مناسب لحقول التاريخ */
+        text-align: center;
+    }
+    
+    .search-btn {
+        background-color: #ff9800;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 8px 12px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .search-btn:hover {
+        background-color: #e68900;
+    }
+
+    🎨
+
 </style>
 {% if user.is_authenticated %}
 <header>
-<nav class="navbar navbar-expand-md bg-gradient bg-warning navbar-dark p-3 ">
-    {% comment %} 
-    <div class="container-fluid">
-        <div class="dropdown ">
-            <button class="dropbtn">Diaries Management ▼</button>
-            <div class="dropdown-content">
-            <a href="#">Add New Diary</a>
-            <a href="#">View All Diaries</a>
-        </div> 
-    </div> 
-    {% endcomment %}
+<nav class="navbar navbar-expand-md bg-gradient bg-warning navbar-dark p-2">
+
     <a class="navbar-brand"
        data-toggle="tooltip"
        href="{% url 'DiariesList' %}"
@@ -110,9 +145,9 @@
             </li>
         </ul>
         {% if user.is_authenticated %}
-        <ul class="navbar-nav mb-2 mb-lg-0 me-3">
+        <ul class="navbar-nav  mb-2 mb-lg-0 me-3">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link  dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{ user.username }}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -126,19 +161,37 @@
                     </li>
                 </ul>
             </li>
-        </u>
-        <form method="get" class="d-flex">
+        </ul>
+        {% if request.resolver_match.url_name == 'DiariesList' %}
+        <form method="get" class="search-form">
             <div class="input-group">
                 <input type='text'
-                class='form-control' 
+                class="search-input text-input"
                 name='query' 
-                placeholder="{% trans 'Search' %}"
+                placeholder="{% trans 'Search (bio or title)' %}"
                 value="{{ request.GET.query }}">
+
+                <input type="number" min="1"name='day' max="31"
+                class="search-input date-input" 
+                placeholder="{% trans 'day' %}"
+                value="{{ request.GET.day }}">
+
+                <input type="number" name="month" min="1" max="12"
+                class="search-input date-input" 
+                placeholder="{% trans 'month' %}"
+                value="{{ request.GET.month }}">
+
+                <input type="number" name="year" min="2024"
+                class="search-input date-input" 
+                placeholder="{% trans 'year' %}"
+                value="{{ request.GET.year }}">
+
                     <button class="btn btn-outline-light" type="submit">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
         </form>
+        {% endif %}
         {% else %}
             <a class="btn btn-outline-light mx" href="{% url 'Register' %}">
                 {% trans 'Register' %}

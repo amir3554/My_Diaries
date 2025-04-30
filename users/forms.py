@@ -37,11 +37,11 @@ class CustomUserCreationForm(UserCreationForm):
     )
 
     first_name = forms.CharField(
-        label='first_name',
+        label='first name',
         widget=forms.TextInput(attrs=attrs)
     )
     last_name = forms.CharField(
-        label='last_name',
+        label='last name',
         widget=forms.TextInput(attrs=attrs)
     )
     
@@ -69,9 +69,11 @@ class CustomUserCreationForm(UserCreationForm):
 
 
     class Meta:
-        model = CustomUser
-        fields = ['username', 'email', 'first_name',
-                 'last_name', 'password1', 'password2', 'bio', 'profile_image']
+       model = CustomUser
+       fields = [
+            'username', 'email', 'first_name', 'last_name', 
+            'password1', 'password2', 'bio', 'profile_image'
+        ]
         
 class ChangeUserPasswordForm(PasswordChangeForm):
 
@@ -95,7 +97,7 @@ class ChangeUserPasswordForm(PasswordChangeForm):
 
     class Meta:
         medel = CustomUser
-        fields = []  # You usually don't need to specify fields here for PasswordChangeForm
+        #fields = []  # You usually don't need to specify fields here for PasswordChangeForm
 
 
 class CustomUserUpdateForm(forms.ModelForm):

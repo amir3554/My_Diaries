@@ -1,3 +1,5 @@
+{% load i18n %}
+{% load mood_tags %}
 <div class="main-slider my-auto"style="background-color: transparent;">
     <div class="swiper-pagination">
     </div>
@@ -6,15 +8,15 @@
             <div class="swiper-slide">
                 <div class="container pt-5">
                     <div class="row">
-                        <div class="col-md-4 text-center d-none d-lg-block" >
-                            <span class="badge rounded-pill bg-dark">
-                                {{slide.get_mood_display}}
-                            </span>
+                        <div class="col-md-3 text-center d-none d-lg-block" >
                         </div>
                         <div class="col-md-8">
-                            <p class='fs-3' >
+                            <div class='fs-3' >
+                                <div class="badge rounded-pill">
+                                    {{ slide.mood|mood_emoji }}
+                                </div>
                                 {{ slide.title }}
-                            </p>
+                            </div>
                             <blockquote class="blockquote mt-4">
                                 <p class="text-muted card-text text-muted small"
                                 style="font-family:'Playwrite RO';">
@@ -27,11 +29,11 @@
             </div>
         {% empty %}
         <p class='fs-3' style="font-family:'Playwrite RO';">
-            "My Diary Slider"
+            {% trans '"My Diary Slider"' %}
         </p>
         <blockquote class="blockquote mt-4">
             <p class="text-muted card-text text-muted small">
-                "Add your thoughts, memories and happy momments here! ..."
+                {% trans '"Add your thoughts, memories and happy momments here! ..."' %}
             </p>
         </blockquote>
         {% endfor %}

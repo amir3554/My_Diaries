@@ -4,7 +4,7 @@ from .forms import DiaryForm, DiaryUpdateForm, NotesForm
 from .models import Diary, Notes
 from users.models import CustomUser
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -13,7 +13,7 @@ from django.views.generic import TemplateView ,CreateView, DetailView, ListView,
 from django.db.models import Q
 import json
 import random
-from django.utils.dateparse import parse_date
+from datetime import date
 
 
 def home(request):
@@ -54,13 +54,22 @@ class DiariesListView(LoginRequiredMixin, ListView):
     ordering = ['-updated_at']
 
     def get_queryset(self):
-        query = self.request.GET.get('query')
+        query = self.request.GET.get('query', '').strip()
+        day = self.request.GET.get('day')
+        month = self.request.GET.get('month')
+        year = self.request.GET.get('year')
         filters = Q()
         if query:
             filters = Q(title__icontains=query) |  Q(description__icontains=query)
+
+        if year and month and day:
+            try:
+                search_date = date(int(year), int(month), int(day))
+                filters &= Q(created_at__date=search_date)
+            except:
+                pass
         
-        query_set = super().get_queryset()
-        return query_set.filter(filters)
+        return Diary.objects.filter(user=self.request.user).filter(filters).order_by('-updated_at')
     
 
 class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
@@ -70,7 +79,7 @@ class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
     pk_url_kwarg = 'diary_id'
 
     def test_func(self):
-        return (self.request.user.id == self.get_object().user_id)
+        return (self.request.user.id == self.get_object().user.id)
 
     def form_valid(self, form):
         self.object = form.save()
@@ -86,15 +95,24 @@ class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
 def delete_diary(request, pk):
     try:
         diary = Diary.objects.get(id=pk)
-        diary.delete()
-        return JsonResponse({'message': 'diary deleted successfully.'}, status=204)
+        if request.user == diary.user:
+            diary.delete()
+            return JsonResponse({'message': 'diary deleted successfully.'}, status=204)
+        else:
+            return JsonResponse({'message': 'Forbidden.'}, status=403)
     except diary.DoesNotExist:
         return JsonResponse({'message': 'diary not found.'}, status=404)
     
     
 
 @login_required
+@require_http_methods(['POST'])
 def create_note(request, diary_id):
+
+    diary = Diary.objects.get(id=diary_id)
+    if diary.user != request.user:
+        return JsonResponse({'message': 'Forbidden.'}, status=403)
+    
     if request.method == "POST":
         data = json.loads(request.body)
         content = data.get("content", "")
@@ -109,8 +127,15 @@ def create_note(request, diary_id):
         })
     return JsonResponse({"success": False}, status=400)
 
+
 @login_required
+@require_http_methods(['POST'])
 def edit_note(request, diary_id, note_id):
+
+    diary = Diary.objects.get(id=diary_id)
+    if request.user != diary.user:
+        return JsonResponse({'message': 'Forbidden.'}, status=403)
+    
     if request.method == "POST":
         data = json.loads(request.body)
         content = data.get("content")
@@ -118,17 +143,25 @@ def edit_note(request, diary_id, note_id):
         note.content = content
         note.save()
         return JsonResponse({"success": True, "content": note.content})
+    
     return JsonResponse({"success": False}, status=400)
 
 @login_required
 @require_http_methods(['DELETE'])
 def delete_note(request, diary_id, note_id):
+
     try:
         diary = Diary.objects.get(id=diary_id)
+        if diary.user != request.user:
+            return JsonResponse({'message': 'Forbidden.'}, status=403)
+        
         note = Notes.objects.get(diary=diary, pk=note_id)
-        note.delete()
+        note.delete()        
         return JsonResponse({'message': 'note deleted successfully.'}, status=204)
+    
     except note.DoesNotExist:
         return JsonResponse({'message': 'note not found.'}, status=404)
+    
     except diary.DoesNotExist:
         return JsonResponse({'message': 'diary not found.'}, status=404)
+    

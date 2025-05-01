@@ -11,13 +11,13 @@ class UserLoginForm(AuthenticationForm):
     def __init__(self,*args, **kwargs):
         super(UserLoginForm, self).__init__(*args, **kwargs)
 
-    username = forms.CharField(
-        label='username',
-        widget=forms.TextInput(attrs=attrs)
+    username = forms.EmailField(
+        label='Email',
+        widget=forms.EmailInput(attrs=attrs)
     )
 
     password = forms.CharField(
-        label='password',
+        label='Password',
         widget=forms.PasswordInput(attrs=attrs)
     )
 
@@ -31,9 +31,9 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.TextInput(attrs=attrs)
     )
 
-    email = forms.CharField(
+    email = forms.EmailField(
         label='email',
-        widget=forms.TextInput(attrs=attrs)
+        widget=forms.EmailInput(attrs=attrs)
     )
 
     first_name = forms.CharField(

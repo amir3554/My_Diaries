@@ -23,7 +23,7 @@ class ProfileView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     pk_url_kwarg = 'user_id'
 
     def test_func(self):
-        return (self.request.user.id == self.get_object().id)
+        return (self.request.user == self.get_object())
 
 
 class CustomUserUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
@@ -33,7 +33,7 @@ class CustomUserUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
     pk_url_kwarg = 'user_id'
 
     def test_func(self):
-        return (self.request.user.id == self.get_object().id)
+        return (self.request.user == self.get_object())
 
     def form_valid(self, form):
         self.object = form.save()

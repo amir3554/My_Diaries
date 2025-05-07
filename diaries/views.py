@@ -79,7 +79,7 @@ class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
     pk_url_kwarg = 'diary_id'
 
     def test_func(self):
-        return (self.request.user.id == self.get_object().user.id)
+        return (self.request.user == self.get_object().user) # type: ignore[attr-defined]
 
     def form_valid(self, form):
         self.object = form.save()
@@ -93,15 +93,14 @@ class DiaryUpdateView(LoginRequiredMixin, UserPassesTestMixin ,UpdateView):
 @login_required
 @require_http_methods(['DELETE'])
 def delete_diary(request, pk):
-    try:
-        diary = Diary.objects.get(id=pk)
-        if request.user == diary.user:
-            diary.delete()
-            return JsonResponse({'message': 'diary deleted successfully.'}, status=204)
-        else:
-            return JsonResponse({'message': 'Forbidden.'}, status=403)
-    except diary.DoesNotExist:
-        return JsonResponse({'message': 'diary not found.'}, status=404)
+
+    diary = get_object_or_404(Diary, id=pk)
+    if request.user != diary.user:
+        return JsonResponse({'message': 'Forbidden.'}, status=403)
+    diary.delete()
+    return JsonResponse({'message': 'diary deleted successfully.'}, status=204)
+        
+
     
     
 
@@ -109,59 +108,54 @@ def delete_diary(request, pk):
 @require_http_methods(['POST'])
 def create_note(request, diary_id):
 
-    diary = Diary.objects.get(id=diary_id)
+    diary = get_object_or_404(Diary, id=diary_id)
     if diary.user != request.user:
         return JsonResponse({'message': 'Forbidden.'}, status=403)
     
-    if request.method == "POST":
-        data = json.loads(request.body)
-        content = data.get("content", "")
-        diary = Diary.objects.get(id=diary_id)
-        note = Notes.objects.create(content=content, diary=diary)
-        return JsonResponse({
-            "success": True,
-            'note': {
-                'id': note.id,
-                'content': note.content
-            }
-        })
-    return JsonResponse({"success": False}, status=400)
+    data = json.loads(request.body)
+    content = data.get("content", "")
+    diary = Diary.objects.get(id=diary_id)
+    note = Notes.objects.create(content=content, diary=diary)
+    return JsonResponse({
+        "success": True,
+        'note': {
+            'id': note.pk,
+            'content': note.content
+        }
+    })
 
 
 @login_required
 @require_http_methods(['POST'])
 def edit_note(request, diary_id, note_id):
 
-    diary = Diary.objects.get(id=diary_id)
+    diary = get_object_or_404(Diary, id=diary_id)
     if request.user != diary.user:
         return JsonResponse({'message': 'Forbidden.'}, status=403)
     
-    if request.method == "POST":
+    try:
         data = json.loads(request.body)
-        content = data.get("content")
-        note = Notes.objects.get(id=note_id)
-        note.content = content
-        note.save()
-        return JsonResponse({"success": True, "content": note.content})
+    except json.JSONDecodeError:
+        return JsonResponse({'message': 'Invalid JSON'}, status=400)
     
-    return JsonResponse({"success": False}, status=400)
+    content = data.get("content")
+    if content is None:
+        return JsonResponse({'message': 'Content is required'}, status=400)
+    
+    note = get_object_or_404(Notes, id=note_id, diary=diary)
+    note.content = content
+    note.save()
+    return JsonResponse({"message": "Note Edited successfully!."}, status=200)
+
 
 @login_required
 @require_http_methods(['DELETE'])
 def delete_note(request, diary_id, note_id):
 
-    try:
-        diary = Diary.objects.get(id=diary_id)
-        if diary.user != request.user:
-            return JsonResponse({'message': 'Forbidden.'}, status=403)
-        
-        note = Notes.objects.get(diary=diary, pk=note_id)
-        note.delete()        
-        return JsonResponse({'message': 'note deleted successfully.'}, status=204)
+    diary = get_object_or_404(Diary, id=diary_id)
+    if diary.user != request.user:
+        return JsonResponse({'message': 'Forbidden.'}, status=403)
     
-    except note.DoesNotExist:
-        return JsonResponse({'message': 'note not found.'}, status=404)
-    
-    except diary.DoesNotExist:
-        return JsonResponse({'message': 'diary not found.'}, status=404)
-    
+    note = get_object_or_404(Notes, diary=diary, pk=note_id)
+    note.delete()        
+    return JsonResponse({'message': 'note deleted successfully.'}, status=204)

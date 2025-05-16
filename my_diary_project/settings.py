@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         #'NAME': BASE_DIR / 'db.sqlite3',
         'HOST' : 'u615qyjzybll9lrm.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
         'USERNAME' : 'secbydoh7yxgfppj',

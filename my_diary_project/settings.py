@@ -93,11 +93,24 @@ DATABASES = {
 
 import os
 import dj_database_url
-DATABASES['default'] = dj_database_url.parse( #type:ignore
-    os.environ.get('JAWSDB_MARIA_URL'),#type:ignore
+# DATABASES['default'] = dj_database_url.parse( #type:ignore
+#     os.environ.get('JAWSDB_MARIA_URL'),#type:ignore
+#     conn_max_age=600,
+#     ssl_require=True
+# )
+db_config = dj_database_url.parse(
+    os.environ['JAWSDB_MARIA_URL'],
     conn_max_age=600,
     ssl_require=True
 )
+
+opts = db_config.get('OPTIONS', {})
+# إن وُجد sslmode، بدّله إلى ssl_mode
+if 'sslmode' in opts:
+    opts['ssl_mode'] = opts.pop('sslmode')
+db_config['OPTIONS'] = opts
+
+DATABASES['default'] = db_config #type:ignore
 
 
 

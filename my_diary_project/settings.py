@@ -20,13 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-from . import secret_info
-SECRET_KEY = secret_info.SECRET_KEY
+
+SECRET_KEY = 'django-insecure-37n!+8i)rgwwm^kbx4a*@7g$u2vsuxws(!wlef73_2ynhi4(in'#secret_info.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'my-diaries-amoor-37e39798c42c.herokuapp.com'
+]
 
 
 # Application definition
@@ -50,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'my_diary_project.urls'
@@ -77,8 +80,13 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'HOST' : 'u615qyjzybll9lrm.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        'USERNAME' : 'secbydoh7yxgfppj',
+        'PASSWORD' : 'oux0ol0y50wpbq3q',
+        'PORT' : '3306',
+        'DATABASE' : 'v1y9spi92oaqpgb0',
     }
 }
 

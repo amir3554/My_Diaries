@@ -46,13 +46,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    
 ]
 
 ROOT_URLCONF = 'my_diary_project.urls'
@@ -79,12 +80,6 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-
-
-
-
-
-
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.mysql',
@@ -99,45 +94,8 @@ DATABASES = {
 
 
 
-
-
-
-
-
-
-
 import os
 import dj_database_url
-# DATABASES['default'] = dj_database_url.parse( #type:ignore
-#     os.environ.get('JAWSDB_MARIA_URL'),#type:ignore
-#     conn_max_age=600,
-#     ssl_require=True
-# )
-
-
-
-
-
-
-
-
-# db_config = dj_database_url.parse(
-#     os.environ['JAWSDB_MARIA_URL'],
-#     conn_max_age=600,
-#     ssl_require=True
-# )
-
-# opts = db_config.get('OPTIONS', {})
-# # إن وُجد sslmode، بدّله إلى ssl_mode
-# if 'sslmode' in opts:
-#     opts['ssl_mode'] = opts.pop('sslmode')
-# db_config['OPTIONS'] = opts
-
-#DATABASES['default'] = db_config #type:ignore
-
-
-
-
 
 
 # parse الرابط دون ssl_require
@@ -150,11 +108,6 @@ config = dj_database_url.parse(
 config.pop('OPTIONS', None)
 
 DATABASES['default'] = config #type:ignore
-
-
-
-
-
 
 
 
@@ -193,16 +146,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 import os
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR /'static',
+    os.path.join(BASE_DIR ,'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = BASE_DIR / 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR , 'media/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

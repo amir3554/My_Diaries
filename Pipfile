@@ -86,6 +86,8 @@ wsproto = "1.2.0"
 pillow = "*"
 dj-database-url = "*"
 whitenoise = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 

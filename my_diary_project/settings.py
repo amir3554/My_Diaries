@@ -79,42 +79,27 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
-
-
-
-
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
+        #'ENGINE': 'django.db.backends.mysql',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'HOST' : 'u615qyjzybll9lrm.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',#os.environ['DB_HOST'],
-        'USERNAME' : 'yqub2iquk871u0sq',#os.environ['DB_USERNAME'],
-        'PASSWORD' : 'doc27gqllmfqmfhc',#os.environ['DB_PASSWORD'],
-        'PORT': '3306',
-        'DATABASE' : 'k11pi2l13e0y96tu',
+        'HOST' : 'u615qyjzybll9lrm.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+        'USERNAME' : 'secbydoh7yxgfppj',
+        'PASSWORD' : 'oux0ol0y50wpbq3q',
+        'PORT' : '3306',
+        'DATABASE' : 'v1y9spi92oaqpgb0',
     }
 }
 
+import os
+import dj_database_url
+DATABASES['default'] = dj_database_url.parse( #type:ignore
+    os.environ.get('JAWSDB_MARIA_URL'),#type:ignore
+    conn_max_age=600,
+    ssl_require=True
+)
 
 
-
-
-
-
-
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         #'NAME': BASE_DIR / 'db.sqlite3',
-#         'HOST' : 'u615qyjzybll9lrm.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
-#         'USERNAME' : 'secbydoh7yxgfppj',
-#         'PASSWORD' : 'oux0ol0y50wpbq3q',
-#         'PORT' : '3306',
-#         'DATABASE' : 'v1y9spi92oaqpgb0',
-#     }
-# }
 
 
 # Password validation

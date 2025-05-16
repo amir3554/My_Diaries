@@ -79,6 +79,16 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 
+
+
+
+
+
+
+
+
+
+
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.mysql',
@@ -91,6 +101,20 @@ DATABASES = {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import os
 import dj_database_url
 # DATABASES['default'] = dj_database_url.parse( #type:ignore
@@ -98,19 +122,74 @@ import dj_database_url
 #     conn_max_age=600,
 #     ssl_require=True
 # )
-db_config = dj_database_url.parse(
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# db_config = dj_database_url.parse(
+#     os.environ['JAWSDB_MARIA_URL'],
+#     conn_max_age=600,
+#     ssl_require=True
+# )
+
+# opts = db_config.get('OPTIONS', {})
+# # إن وُجد sslmode، بدّله إلى ssl_mode
+# if 'sslmode' in opts:
+#     opts['ssl_mode'] = opts.pop('sslmode')
+# db_config['OPTIONS'] = opts
+
+#DATABASES['default'] = db_config #type:ignore
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import os
+import dj_database_url
+
+# parse الرابط دون ssl_require
+config = dj_database_url.parse(
     os.environ['JAWSDB_MARIA_URL'],
     conn_max_age=600,
-    ssl_require=True
 )
 
-opts = db_config.get('OPTIONS', {})
-# إن وُجد sslmode، بدّله إلى ssl_mode
-if 'sslmode' in opts:
-    opts['ssl_mode'] = opts.pop('sslmode')
-db_config['OPTIONS'] = opts
+# تخلّص من OPTIONS كلها حتى لا يمرر ssl_mode أو sslmode
+config.pop('OPTIONS', None)
 
-DATABASES['default'] = db_config #type:ignore
+DATABASES['default'] = config #type:ignore
+
+
+
+
+
+
+
+
 
 
 

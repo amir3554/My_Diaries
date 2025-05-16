@@ -85,10 +85,6 @@ WSGI_APPLICATION = 'my_diary_project.wsgi.application'
 
 
 
-
-
-
-
 DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.mysql',
@@ -110,11 +106,6 @@ DATABASES = {
 
 
 
-
-
-
-
-
 import os
 import dj_database_url
 # DATABASES['default'] = dj_database_url.parse( #type:ignore
@@ -122,14 +113,6 @@ import dj_database_url
 #     conn_max_age=600,
 #     ssl_require=True
 # )
-
-
-
-
-
-
-
-
 
 
 
@@ -157,21 +140,6 @@ import dj_database_url
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-import os
-import dj_database_url
-
 # parse الرابط دون ssl_require
 config = dj_database_url.parse(
     os.environ['JAWSDB_MARIA_URL'],
@@ -182,10 +150,6 @@ config = dj_database_url.parse(
 config.pop('OPTIONS', None)
 
 DATABASES['default'] = config #type:ignore
-
-
-
-
 
 
 

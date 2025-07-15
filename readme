@@ -1,0 +1,22 @@
+Diary web application
+
+this app is an online diary, built using Django framework it has an authentication system
+
+Beautiful css and javascript designs 
+
+This project is way more reactive compare to my other projects which means less numbers of reloading pages and smooth experience for the user (user friendly) using javascript (axios and ajax requests ) to make requests and get the data needed from the server without refreshing the page whole and changing the html elements by javascript after getting the response from the server.
+
+To use the app you must make an account then start writing about your daily life and thoughts, you can choose the mood (happy, sad, normal, satisfied, ... ) and every diary have a notes ( add additional thoughts and points on your diary) and the notes will be added smoothly to the page without refreshing, the notes can be edited and deleted as well as the diaries .
+
+The user also can add/change their profile picture and bio, and you can see your account details and the other page for changing them.
+
+The diaries will appear in coordinated lists ( you can click on the eye icon to see the full diary content and you can click on the trash icon to delete it ) that was done by javascript lines .
+
+And in the main page you can see your profile picture and a slider of your happy diaries (those who have a happy mode and above ) to remind you of your happy moments .
+
+In summary:
+
+This project is a Django-based online diary featuring a full authentication system and a sleek, responsive front end built with modern CSS and JavaScript (Axios/AJAX). Instead of full page reloads, all interactions—from creating and updating entries to adding or deleting notes—happen dynamically for a smooth, user-friendly experience.
+
+By leveraging Django on the back end and JavaScript-driven AJAX calls on the front end, this app delivers a seamless, reactive journaling experience.
+
